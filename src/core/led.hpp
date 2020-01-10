@@ -43,6 +43,10 @@ class Led {
 		void registerBlink(unsigned char led);
 
 		/**
+		 */
+		void registerReportWrite(unsigned char *buf, unsigned int pos, unsigned int size);
+
+		/**
 		 * Sets LedType.
 		 * @param type LedType can be Common, Profile or Indicator.
 		 */
@@ -51,6 +55,9 @@ class Led {
 
 	private:
 		unsigned char report_;
+		unsigned char *reportWrite_;
+		unsigned int reportWriteSize_;
+		unsigned int reportLedPos_;
 		unsigned char led_;
 		unsigned char blink_;
 		LedGroup *group_;
