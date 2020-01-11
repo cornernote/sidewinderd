@@ -36,7 +36,7 @@ constexpr auto G815_LED_MR = 0x01;
 constexpr auto G815_KEY_M1 = 0x01;
 constexpr auto G815_KEY_M2 = 0x02;
 constexpr auto G815_KEY_M3 = 0x03;
-constexpr auto G815_KEY_MR = 0x0c;
+constexpr auto G815_KEY_MR = 0x04;
 
 void LogitechG815::setProfile(int profile) {
 	profile_ = profile;
@@ -83,7 +83,7 @@ struct KeyData LogitechG815::getInput() {
 		 * M1	0x11 0xff 0x0b 0x00 0x01 - buf[4]
 		 * M2	0x11 0xff 0x0b 0x00 0x02 - buf[4]
 		 * M3	0x11 0xff 0x0b 0x00 0x04 - buf[4]
-		 * MR	0x11 0xff 0x0c 0x00 0x01 - buf[2]
+		 * MR	0x11 0xff 0x0c 0x00 0x01 - G815_KEY_MR
 		 */
 		if (buf[2] == 0x0a) {
 			key = (static_cast<int>(buf[4]));
@@ -102,11 +102,11 @@ struct KeyData LogitechG815::getInput() {
 				keyData.type = KeyData::KeyType::Extra;
 			}
 		} else if (buf[2] == 0x0c) {
-			key = (static_cast<int>(buf[2]));
+			key = (static_cast<int>(buf[4]));
 			key = ffs(key);
 			if (key) {
 				// std::cout << "LogitechG815 - MR key pressed" << std::endl;
-				keyData.index = key;
+				keyData.index = G815_KEY_MR;
 				keyData.type = KeyData::KeyType::Extra;
 			}
 		}
